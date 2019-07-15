@@ -26,7 +26,7 @@ pub fn words(s: String) {
     let vocab_len = corpus.len();
     let window_size = 1;
 
-    let mut a = Array2::<f64>::zeros((vocab_len, vocab_len));
+    let mut a = Array2::<i64>::zeros((vocab_len, vocab_len));
     println!("{:#?}", a);
 
     for word_id in &corpus {
@@ -34,12 +34,12 @@ pub fn words(s: String) {
         let right_id = word_id + 1;
         if left_id > 0 {
             let left_word_id = corpus[left_id as usize];
-            // a[[word_id, &{left_word_id}]] += 1.;
+            a[[2, 3]] += 1;
         }
 
         if right_id < vocab_len as i32 {
             let right_word_id = corpus[right_id as usize];
-            // a[[word_id, &{right_word_id}]] += 1.;
+            a[[2, 2]] += 1;
         }
     }
     println!("{:#?}", a);
