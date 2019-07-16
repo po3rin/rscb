@@ -31,8 +31,7 @@ pub fn words(s: String) {
     let vocab_len = word_to_id.len();
     let mut a = Array2::<f64>::zeros((vocab_len, vocab_len));
 
-    let mut i = 0;
-    for word_id in &corpus {
+    for (i, word_id) in corpus.iter().enumerate() {
         if i > 0 {
             let left_id = i - 1;
             let left_word_id = corpus[left_id];
@@ -44,8 +43,8 @@ pub fn words(s: String) {
             let right_word_id = corpus[right_id];
             a[[*word_id, right_word_id]] += 1.;
         }
-        i += 1
     }
+
     println!("======Co-occurrence matrix=====\n{:#?}\n", a);
 
     let c0 = a.slice(s![word_to_id["you"], ..]);
@@ -61,20 +60,19 @@ pub fn words(s: String) {
         sum1 += item.powi(2);
     }
 
-    let m0 = sum0.sqrt();
-    let m1 = sum1.sqrt();
-
     let mut cm0 = Array::<f64, _>::zeros(vocab_len);
-    for mut row in cm0.genrows_mut() {
-        row.fill(1. / m0);
-    }
     let mut cm1 = Array::<f64, _>::zeros(vocab_len);
+
+    for mut row in cm0.genrows_mut() {
+        row.fill(1. / sum0.sqrt())
+    }
     for mut row in cm1.genrows_mut() {
-        row.fill(1. / m1);
+        row.fill(1. / sum1.sqrt())
     }
 
     let nx = c0.mul(&cm0);
     let ny = c1.mul(&cm1);
 
-    println!("{}", nx.dot(&ny))
+    println!("====== Result =====");
+    println!("'you' & 'I' : {}", nx.dot(&ny))
 }

@@ -3,5 +3,7 @@ extern crate rscb;
 use rscb::word;
 
 fn main() {
-    word::words(String::from("you say goodbye and i say hello ."));
+    let text = String::from("you say goodbye and i say hello .");
+    println!("=====target text=====\n'{}'\n", text);
+    word::words(text);
 }
