@@ -51,8 +51,8 @@ pub fn create_to_matrix(corpus: Vec<usize>, word_to_id: &HashMap<&str, usize>) -
 }
 
 pub fn cos_simirality(
-    c0: ndarray::ArrayBase<ndarray::ViewRepr<&f64>, ndarray::Dim<[usize; 1]>>,
-    c1: ndarray::ArrayBase<ndarray::ViewRepr<&f64>, ndarray::Dim<[usize; 1]>>,
+    c0: ArrayBase<ndarray::ViewRepr<&f64>, Dim<[usize; 1]>>,
+    c1: ArrayBase<ndarray::ViewRepr<&f64>, Dim<[usize; 1]>>,
     vocab_len: usize,
 ) -> f64 {
     let mut sum0: f64 = 0.;
