@@ -4,7 +4,9 @@ use ndarray::prelude::*;
 use std::collections::HashMap;
 use std::ops::Mul;
 
-pub fn words(s: String) {
+pub fn preprocess<'a>(
+    s: &'a str,
+) -> (HashMap<&'a str, usize>, HashMap<usize, &'a str>, Vec<usize>) {
     let mut word_to_id = HashMap::new();
     let mut id_to_word = HashMap::new();
     let mut corpus = Vec::new();
@@ -23,10 +25,10 @@ pub fn words(s: String) {
         corpus.push(word_to_id[item]);
     }
 
-    println!("=====id_to_word=====\n{:#?}\n", &id_to_word);
-    println!("=====word_to_id=====\n{:#?}\n", &word_to_id);
-    println!("=====corpus=====\n{:#?}\n", &corpus);
+    (word_to_id, id_to_word, corpus)
+}
 
+pub fn create_to_matrix(corpus: Vec<usize>, word_to_id: &HashMap<&str, usize>) -> Array2<f64> {
     let corpus_len = corpus.len();
     let vocab_len = word_to_id.len();
     let mut a = Array2::<f64>::zeros((vocab_len, vocab_len));
@@ -45,11 +47,14 @@ pub fn words(s: String) {
         }
     }
 
-    println!("======Co-occurrence matrix=====\n{:#?}\n", a);
+    a
+}
 
-    let c0 = a.slice(s![word_to_id["you"], ..]);
-    let c1 = a.slice(s![word_to_id["i"], ..]);
-
+pub fn cos_simirality(
+    c0: ndarray::ArrayBase<ndarray::ViewRepr<&f64>, ndarray::Dim<[usize; 1]>>,
+    c1: ndarray::ArrayBase<ndarray::ViewRepr<&f64>, ndarray::Dim<[usize; 1]>>,
+    vocab_len: usize,
+) -> f64 {
     let mut sum0: f64 = 0.;
     let mut sum1: f64 = 0.;
 
@@ -73,6 +78,5 @@ pub fn words(s: String) {
     let nx = c0.mul(&cm0);
     let ny = c1.mul(&cm1);
 
-    println!("====== Result =====");
-    println!("'you' & 'I' : {}", nx.dot(&ny))
+    nx.dot(&ny)
 }

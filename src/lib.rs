@@ -1,5 +1,11 @@
 pub mod rscb;
 pub mod word;
 
-#[macro_use(s)]
-extern crate ndarray;
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn it_works() {
+        // TODO: impliments test.
+        assert_eq!(2 + 2, 4);
+    }
+}
