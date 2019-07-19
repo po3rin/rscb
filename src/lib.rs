@@ -1,4 +1,3 @@
-pub mod rscb;
 pub mod word;
 
 #[cfg(test)]
