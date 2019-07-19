@@ -8,6 +8,7 @@ mod tests {
 
     #[test]
     fn test_preprocess() {
+        // TODO: inits simply
         let mut expect_word_to_id = HashMap::new();
         let mut expect_id_to_word = HashMap::new();
         let mut expect_corpus = Vec::new();
