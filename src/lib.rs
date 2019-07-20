@@ -6,37 +6,41 @@ pub mod word;
 mod tests {
     use super::*;
 
+    macro_rules! hash {
+        ( $( $t:expr),* ) => {
+            {
+                let mut temp_hash = HashMap::new();
+                $(
+                    temp_hash.insert($t.0, $t.1);
+                )*
+                temp_hash
+            }
+        };
+    }
+
     #[test]
     fn test_preprocess() {
-        // TODO: inits simply
-        let mut expect_word_to_id = HashMap::new();
-        let mut expect_id_to_word = HashMap::new();
-        let mut expect_corpus = Vec::new();
+        let expect_id_to_word = hash![
+            (0, "you"),
+            (1, "say"),
+            (2, "goodbye"),
+            (3, "and"),
+            (4, "i"),
+            (5, "hello"),
+            (6, ".")
+        ];
 
-        expect_id_to_word.insert(0, "you");
-        expect_id_to_word.insert(1, "say");
-        expect_id_to_word.insert(2, "goodbye");
-        expect_id_to_word.insert(3, "and");
-        expect_id_to_word.insert(4, "i");
-        expect_id_to_word.insert(5, "hello");
-        expect_id_to_word.insert(6, ".");
+        let expect_word_to_id = hash![
+            ("you", 0),
+            ("say", 1),
+            ("goodbye", 2),
+            ("and", 3),
+            ("i", 4),
+            ("hello", 5),
+            (".", 6)
+        ];
 
-        expect_word_to_id.insert("you", 0);
-        expect_word_to_id.insert("say", 1);
-        expect_word_to_id.insert("goodbye", 2);
-        expect_word_to_id.insert("and", 3);
-        expect_word_to_id.insert("i", 4);
-        expect_word_to_id.insert("hello", 5);
-        expect_word_to_id.insert(".", 6);
-
-        expect_corpus.push(0);
-        expect_corpus.push(1);
-        expect_corpus.push(2);
-        expect_corpus.push(3);
-        expect_corpus.push(4);
-        expect_corpus.push(1);
-        expect_corpus.push(5);
-        expect_corpus.push(6);
+        let expect_corpus = vec![0, 1, 2, 3, 4, 1, 5, 6];
 
         let st = String::from("you say goodbye and i say hello .");
         let (word_to_id, id_to_word, corpus) = word::preprocess(&st);
